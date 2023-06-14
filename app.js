@@ -45,5 +45,5 @@ app.use('/', require('./server/routes/main'));
 app.use('/', require('./server/routes/admin'));
 
 mongoose.connect(process.env.MONGO_URL)
-    .then(() => app.listen(port, () => console.log(`Listening on port ${port}`)))
+    .then(() => app.listen(port, "0.0.0.0", () => console.log(`Listening on port ${port}`)))
     .catch((err) => console.log('Something went wrong, when connecting to Mongo: ' + err));
