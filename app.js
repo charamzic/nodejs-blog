@@ -8,7 +8,7 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 
 const connectDB = require('./server/config/db');
-const { isActiveRoute } = require('./server/helpers/routerHelpers')
+const { isActiveRoute } = require('./server/helpers/routerHelpers');
 
 const app = express();
 const PORT = 3000 || process.env.PORT;
@@ -16,7 +16,7 @@ const PORT = 3000 || process.env.PORT;
 // Connect to database
 connectDB();
 
-app.use(express.urlencoded({ extended: true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(methodOverride('_method'));
