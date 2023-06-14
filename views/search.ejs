@@ -1,12 +1,8 @@
 <div class="author">
-    <h1 class="author__heading">Hi, I'm HoCh!</h1>
-    <p class="author__body">Software developer at Deutsche Böerse.</p>
+    <h1 class="author__heading">Search results</h1>
 </div>
 
-<img src="/img/hero-image-narrow.webp" alt="some picture" class="hero-image" width="981" height="264">
-
 <section class="articles">
-    <h2 class="articles__heading">Latest posts</h2>
 
     <ul class="article__ul">
         <% data.forEach(post => { %>
@@ -19,7 +15,4 @@
         <% }) %>
     </ul>
 
-    <% if ( nextPage !== null) { %>
-        <a href="/?page=<%= nextPage %>" class="pagination">&lt; View older posts</a>
-    <% } %>
 </section>
