@@ -8,6 +8,8 @@ const jwt = require('jsonwebtoken');
 const adminLayout = '../views/layouts/admin';
 const jwtSecret = process.env.JWT_SECRET;
 
+const { BLOG_NAME, BLOG_DESCRIPTION } = require('../models/constants');
+
 /**
  *
  * Check login
@@ -34,12 +36,12 @@ const authMiddleware = (req, res, next) => {
 router.get('/admin', async (req, res) => {
     try {
         const locals = {
-            title: 'Admin',
-            description: 'Simple blog, created with NodeJs, Express and MongoDb.'
+            title: `${BLOG_NAME} | Admin`,
+            description: BLOG_DESCRIPTION
         }
         res.render('admin/index', { locals, layout: adminLayout });
     } catch (error) {
-        console.log(error)
+        console.error(error)
     }
 });
 
@@ -67,7 +69,7 @@ router.post('/admin', async (req, res) => {
 
         res.redirect('/dashboard');
     } catch (error) {
-        console.log(error)
+        console.error(error)
     }
 });
 
@@ -91,7 +93,7 @@ router.post('/register', async (req, res) => {
         }
 
     } catch (error) {
-        console.log(error)
+        console.error(error)
     }
 });
 
@@ -102,13 +104,13 @@ router.post('/register', async (req, res) => {
 router.get('/dashboard', authMiddleware, async (req, res) => {
     try {
         const locals = {
-            title: 'Admin | Dashboard',
-            description: 'Simple blog, created with NodeJs, Express and MongoDb.'
+            title: `${BLOG_NAME} | Dashboard`,
+            description: BLOG_DESCRIPTION
         }
         const data = await Post.find();
         res.render('admin/dashboard', { locals, data, layout: adminLayout });
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 });
 
@@ -119,13 +121,13 @@ router.get('/dashboard', authMiddleware, async (req, res) => {
 router.get('/add-post', authMiddleware, async (req, res) => {
     try {
         const locals = {
-            title: 'Admin | Add post',
-            description: 'Simple blog, created with NodeJs, Express and MongoDb.'
+            title: `${BLOG_NAME} | Add post`,
+            description: BLOG_DESCRIPTION
         }
         const data = await Post.find();
         res.render('admin/add-post', { locals, data, layout: adminLayout });
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 });
 
@@ -144,10 +146,10 @@ router.post('/add-post', authMiddleware, async (req, res) => {
             await Post.create(newPost);
             res.redirect('/dashboard');
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 });
 
@@ -158,15 +160,15 @@ router.post('/add-post', authMiddleware, async (req, res) => {
 router.get('/edit-post/:id', authMiddleware, async (req, res) => {
     try {
         const locals = {
-            title: 'Admin | Edit post',
-            description: 'Simple blog, created with NodeJs, Express and MongoDb.'
+            title: `${BLOG_NAME} | Edit post`,
+            description: BLOG_DESCRIPTION
         }
 
         const data = await Post.findOne({ _id: req.params.id });
 
         res.render(`admin/edit-post`, { data, layout: adminLayout, locals });
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 });
 
@@ -185,7 +187,7 @@ router.put('/edit-post/:id', authMiddleware, async (req, res) => {
         res.redirect(`/edit-post/${req.params.id}`);
 
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 });
 
@@ -198,7 +200,7 @@ router.delete('/delete-post/:id', authMiddleware, async (req, res) => {
         await Post.deleteOne({_id: req.params.id});
         res.redirect('/dashboard');
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 });
 

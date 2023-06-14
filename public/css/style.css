@@ -34,6 +34,9 @@ h2 {
 h3 {
     font-size: var(--font-size-md);
 }
+p {
+    font-size: var(--font-size-md);
+}
 
 input[type="text"],
 input[type="email"],
