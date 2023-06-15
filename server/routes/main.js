@@ -66,7 +66,6 @@ router.get('/about', async (req, res) => {
 router.get('/post/:slug', async (req, res) => {
     try {
         const data = await Post.findOne({ slug: req.params.slug });
-        console.log(data)
 
         const locals = {
             title: `${BLOG_NAME} | ${data.title}`,
