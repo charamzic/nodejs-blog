@@ -3,15 +3,15 @@
     <p class="author__body">A padawan of software development.</p>
 </div>
 
-<img src="/img/hero-image-narrow.webp" alt="some picture" class="hero-image" width="981" height="264">
+<!--<img src="/img/hero-image-narrow.webp" alt="some picture" class="hero-image" width="981" height="264">-->
 
 <section class="articles">
-    <h2 class="articles__heading">Latest posts</h2>
+<!--    <h2 class="articles__heading">Latest posts</h2>-->
 
     <ul class="article__ul">
         <% data.forEach(post => { %>
             <li>
-                <a href="/post/<%= post._id %>">
+                <a href="/post/<%= post.slug %>">
                     <span><%= post.title %></span>
                     <span class="article-list__date"><%= post.createdAt.toDateString() %></span>
                 </a>

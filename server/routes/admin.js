@@ -9,6 +9,11 @@ const adminLayout = '../views/layouts/admin';
 const jwtSecret = process.env.JWT_SECRET;
 
 const { BLOG_NAME, BLOG_DESCRIPTION } = require('../models/constants');
+const slugify = require("slugify");
+const marked = require("marked");
+const createDomPurify = require('dompurify');
+const { JSDOM } = require('jsdom');
+const dompurify = createDomPurify(new JSDOM().window);
 
 /**
  *
@@ -157,15 +162,14 @@ router.post('/add-post', authMiddleware, async (req, res) => {
  * GET /
  * Admin - update post
  */
-router.get('/edit-post/:id', authMiddleware, async (req, res) => {
+router.get('/edit-post/:slug', authMiddleware, async (req, res) => {
     try {
         const locals = {
             title: `${BLOG_NAME} | Edit post`,
             description: BLOG_DESCRIPTION
         }
 
-        const data = await Post.findOne({ _id: req.params.id });
-
+        const data = await Post.findOne({ slug: req.params.slug });
         res.render(`admin/edit-post`, { data, layout: adminLayout, locals });
     } catch (error) {
         console.error(error);
@@ -176,16 +180,18 @@ router.get('/edit-post/:id', authMiddleware, async (req, res) => {
  * PUT /
  * Admin - update post
  */
-router.put('/edit-post/:id', authMiddleware, async (req, res) => {
+router.put('/edit-post/:slug', authMiddleware, async (req, res) => {
     try {
-        await Post.findByIdAndUpdate(req.params.id, {
+        const newSlug = slugify(req.body.title, { lower: true, strict: true });
+        await Post.findOneAndUpdate({ slug: req.params.slug }, {
             title: req.body.title,
             body: req.body.body,
+            slug: newSlug,
+            sanitizedHtml: dompurify.sanitize(marked.parse(req.body.body)),
             updatedAt: Date.now()
         });
 
-        res.redirect(`/edit-post/${req.params.id}`);
-
+        res.redirect(`/edit-post/${newSlug}`);
     } catch (error) {
         console.error(error);
     }
@@ -195,9 +201,9 @@ router.put('/edit-post/:id', authMiddleware, async (req, res) => {
  * DELETE /
  * Admin - delete post
  */
-router.delete('/delete-post/:id', authMiddleware, async (req, res) => {
+router.delete('/delete-post/:slug', authMiddleware, async (req, res) => {
     try {
-        await Post.deleteOne({_id: req.params.id});
+        await Post.deleteOne({ slug: req.params.slug });
         res.redirect('/dashboard');
     } catch (error) {
         console.error(error);

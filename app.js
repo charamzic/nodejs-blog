@@ -30,7 +30,7 @@ app.use(session({
     store: MongoStore.create({
         mongoUrl: process.env.MONGO_URL
     })
-}))
+}));
 
 app.use(express.static('public'));
 

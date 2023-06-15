@@ -63,17 +63,17 @@ router.get('/about', async (req, res) => {
  * GET /
  * Post :id
  */
-router.get('/post/:id', async (req, res) => {
+router.get('/post/:slug', async (req, res) => {
     try {
-        let slug = req.params.id;
-        const data = await Post.findById({ _id: slug });
+        const data = await Post.findOne({ slug: req.params.slug });
+        console.log(data)
 
         const locals = {
             title: `${BLOG_NAME} | ${data.title}`,
             description: BLOG_DESCRIPTION
         }
 
-        res.render('post', { locals, data, currentRoute: `/post/${slug}` });
+        res.render('post', { locals, data, currentRoute: `/post/${req.params.slug}` });
     } catch (error) {
         console.error(error);
     }
